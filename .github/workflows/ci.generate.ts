@@ -535,6 +535,15 @@ const ci = {
           },
         },
         {
+          if: "matrix.profile == 'release'",
+          run: `\
+echo "
+export CLANG_BASE_PATH=/usr
+export V8_FROM_SOURCE=1
+export EXTRA_GN_ARGS=\\"is_official_build=true chrome_pgo_phase=0 is_cfi=false clang_version=${llvmVersion}\\"
+" > $GITHUB_ENV`,
+        },
+        {
           name: "Configure canary build",
           if: [
             "matrix.job == 'test' &&",

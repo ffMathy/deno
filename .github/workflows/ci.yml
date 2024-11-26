@@ -236,6 +236,13 @@ jobs:
           CLOUDSDK_PYTHON: '${{env.pythonLocation}}\python.exe'
         with:
           project_id: denoland
+      - if: '!(matrix.skip) && (matrix.profile == ''release'')'
+        run: |-
+          echo "
+          export CLANG_BASE_PATH=/usr
+          export V8_FROM_SOURCE=1
+          export EXTRA_GN_ARGS=\"is_official_build=true chrome_pgo_phase=0 is_cfi=false clang_version=19\"
+          " > $GITHUB_ENV
       - name: Configure canary build
         if: |-
           !(matrix.skip) && (matrix.job == 'test' &&
